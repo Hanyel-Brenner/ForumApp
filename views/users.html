@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+  <!--  <h1>Welcome to Xquisidor! We are a forum about all kinds of things...Wander around and take a look!</h1><br>  -->
+    <h2>
+        REGISTERED USERS
+    </h2>
+    <div id="user-list">
+
+    </div>
+
+    <script type="module">
+        let resp = await fetch('http://localhost:3000/api/getUsers').then(response => response.json())  //this result is a json as specified in the backend
+        let element = document.getElementById('user-list')
+        let p = document.createElement('p')
+        p.textContent = JSON.stringify(resp);
+        element.appendChild(p);
+    </script> 
+</body>
+</html>
+
+
