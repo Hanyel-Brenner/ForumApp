@@ -2,11 +2,11 @@ import { Post } from "../models/post";
 
 export class PostRepo{
 
-    public posts:Post[];
+    public posts:Post[] = [];
 
     async find(title:string):Promise<Post>
     {
-        return this.posts.find(user => user.title === title);
+        return (this.posts || []).find(user => user.title === title);
     }
     async add(post:Post):Promise<string>
     {
@@ -25,6 +25,6 @@ export class PostRepo{
         else return false;
     }
     async list():Promise<Post[]>{
-        return this.posts;
+        return await this.posts;
     }
 }

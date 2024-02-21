@@ -74,19 +74,28 @@ server.get('/home', function (req, res) {
 });
 //api that sends json contaning the users registered in the App class instance
 server.get('/api/getUsers', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var userList, array;
+    var userList;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, app_1.app.listUsers()];
             case 1:
                 userList = _a.sent();
-                array = [1, 2, 3, 4, 5];
-                //if(userList == null) res.status(500).send('Server could not acess list of users!');
-                //else res.send(userList).json();
                 return [4 /*yield*/, res.send(userList)];
             case 2:
-                //if(userList == null) res.status(500).send('Server could not acess list of users!');
-                //else res.send(userList).json();
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
+server.get('/api/getPosts', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var postList;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, app_1.app.listPosts()];
+            case 1:
+                postList = _a.sent();
+                return [4 /*yield*/, res.send(postList)];
+            case 2:
                 _a.sent();
                 return [2 /*return*/];
         }

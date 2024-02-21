@@ -49,17 +49,17 @@ server.get('/home', (req:Request,res:Response) => {
 })
 //api that sends json contaning the users registered in the App class instance
 server.get('/api/getUsers', async (req:Request,res:Response) => {
-   // let app = new App(new UserRepo(),new PostRepo())
+    
     let userList = await app.listUsers();
-    //await app.registerUser(new User('redfield','redfield@mail.com','123'));
-   // await app.registerUser(new User('hanyel','hanyel@mail.com','123'));
-    //await app.registerUser(new User('daniel','daniel@mail.com','123'));
-   // await app.registerUser(new User('pedro','pedro@mail.com','123'));
-    let array = [1,2,3,4,5];
-    //if(userList == null) res.status(500).send('Server could not acess list of users!');
-    //else res.send(userList).json();
     await res.send(userList);
-   // res.json(userList);
+    
+});
+
+server.get('/api/getPosts', async (req:Request,res:Response) => {
+    
+    let postList = await app.listPosts();
+    await res.send(postList);
+    
 });
 
 

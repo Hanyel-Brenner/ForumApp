@@ -6,28 +6,26 @@
 <body>
   <!--  <h1>Welcome to Xquisidor! We are a forum about all kinds of things...Wander around and take a look!</h1><br>  -->
     <h2>
-        REGISTERED USERS
+        POSTS
     </h2>
-    <div id="user-list">
+    <div id="post-list">
         
     </div>
 
     <script type="module">
-        let resp = await fetch('http://localhost:3000/api/getUsers').then(response => response.json())  //this result is a json as specified in the backend
-        let element = document.getElementById('user-list')
+        let resp = await fetch('http://localhost:3000/api/getPosts').then(response => response.json())  //this result is a json as specified in the backend
+        let element = document.getElementById('post-list')
     
         for(let i=0; i<10 && Object.keys(resp).length; i++) //imprime quantos 
         {
             let p = document.createElement('p')
             p.innerHTML = 'id : '+resp[i].id
-                        +'<br>nickname : '+resp[i].nickname
-                        +'<br>email : '+resp[i].email
-                        +'<br>password : '+resp[i].password
+                        +'<br>title : '+resp[i].title
+                        +'<br>content : '+resp[i].content
+                        +'<br>author : '+resp[i].author
                         +'<br><br>'
             element.appendChild(p);
         }
     </script> 
 </body>
 </html>
-
-

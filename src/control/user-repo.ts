@@ -1,10 +1,9 @@
 import { IUserRepo } from "../interfaces/i-user-repo";
 import { User } from "../models/user";
-//import crypto from 'crypto'
 
 export class UserRepo implements IUserRepo{   //UserRepo is basically an array of users that  uses the interface IUserRepo
         
-    public users:User[]
+    public users:User[] = []
 
     async find(email:string):Promise<User>
     {
