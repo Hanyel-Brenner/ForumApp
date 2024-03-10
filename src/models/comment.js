@@ -1,16 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Post = void 0;
-var Post = /** @class */ (function () {
-    function Post(title, content, author) {
+exports.Comment = void 0;
+var Comment = /** @class */ (function () {
+    function Comment(content, author, post) {
         this.id = '';
-        this.title = '';
         this.content = '';
-        this.title = title;
         this.content = content;
         this.author = author;
+        this.post = post;
         this.date = new Date();
     }
-    return Post;
+    return Comment;
 }());
-exports.Post = Post;
+exports.Comment = Comment;

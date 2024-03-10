@@ -6,14 +6,16 @@ export class Post
     public id:string = '';
     public title:string = '';
     public content:string = '';
-    public author:string = '';
-    public comment:Comment[] = []
+    //public author:string = '';
+    public author:User;
+    public date: Date;
     
-    constructor(title:string,content:string,author:string)
+    constructor(title:string,content:string,author:User)
     {
         this.title = title;
         this.content = content;
         this.author = author;
+        this.date = new Date();
     }
 
 }

@@ -36,51 +36,57 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserRepo = void 0;
-var UserRepo = /** @class */ (function () {
-    function UserRepo() {
-        this.users = [];
+exports.CommentRepo = void 0;
+var CommentRepo = /** @class */ (function () {
+    function CommentRepo() {
+        this.comments = [];
     }
-    UserRepo.prototype.find = function (email) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.users.find(function (user) { return user.email === email; })];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    UserRepo.prototype.add = function (user) {
+    CommentRepo.prototype.add = function (comment) {
         return __awaiter(this, void 0, void 0, function () {
             var newId;
             return __generator(this, function (_a) {
                 newId = crypto.randomUUID();
-                user.id = newId;
-                this.users.push(user);
-                return [2 /*return*/, user.id];
+                comment.id = newId; //set id
+                comment.date = new Date(); //set current date as date of creation
+                this.comments.push(comment);
+                return [2 /*return*/, comment.id];
             });
         });
     };
-    UserRepo.prototype.remove = function (email) {
+    CommentRepo.prototype.remove = function (commentId) {
         return __awaiter(this, void 0, void 0, function () {
             var index;
             return __generator(this, function (_a) {
-                index = this.users.findIndex(function (user) { return user.email == email; });
+                index = this.comments.findIndex(function (comment) { return comment.id == commentId; });
                 if (index != -1) {
-                    this.users.splice(index, 1);
+                    this.comments.splice(index, 1);
+                    return [2 /*return*/, true];
                 }
+                else
+                    return [2 /*return*/, false];
                 return [2 /*return*/];
             });
         });
     };
-    UserRepo.prototype.list = function () {
+    //this function recovers the comments of a given post from all the comments in the comments array of App object in app.ts
+    /*async list(postId:string):Promise<Comment[]>
+    {
+        if(!postId) return this.comments
+
+        let recoveredComments:Comment[];
+        for(let i=0; i<this.comments.length; i++)
+        {
+            if(this.comments[i].postId == postId) recoveredComments.push(this.comments[i])
+        }
+        return recoveredComments;
+    }*/
+    CommentRepo.prototype.list = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.users];
+                return [2 /*return*/, this.comments];
             });
         });
     };
-    return UserRepo;
+    return CommentRepo;
 }());
-exports.UserRepo = UserRepo;
+exports.CommentRepo = CommentRepo;

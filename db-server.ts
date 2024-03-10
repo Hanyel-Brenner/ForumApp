@@ -1,11 +1,9 @@
-import {Request,Response} from 'express'
-import { App } from './src/control/app';
+import {Request,Response} from 'express';
 import { UserRepo } from './src/control/user-repo';
 import { PostRepo } from './src/control/posts-repo';
 import { User } from './src/models/user';
-//imports of class instances
-import {app} from './src/control/app'
 import { Post } from './src/models/post';
+import app from "./src/db-control/prisma-app";
 
 const path = require('path');
 const fs = require('fs');
@@ -13,10 +11,10 @@ const express = require('express');
 const server = express();
 const PORT = 3000;
 const baseUrl = 'http://localhost:'+PORT.toString();
-const viewsPath = './views/';
+const viewsPath = './db-views/';
 const srcPath = './src/';
 
-server.use(express.static(path.join(__dirname,'views')));  //this line tells the server that it can use all the static files that are on the 'views' directory (css,html,javascript files)
+server.use(express.static(path.join(__dirname,'db-views')));  //this line tells the server that it can use all the static files that are on the 'views' directory (css,html,javascript files)
 //server.use("/js", express.static(__dirname + 'src'));
 
 
@@ -60,16 +58,16 @@ server.get('/comments',(req:Request,res:Response) => {
 //api that sends json contaning the users registered in the App class instance
 server.get('/api/getUsers', async (req:Request,res:Response) => {
     
-    let userList = await app.listUsers();
-    await res.send(userList);
+   let usersList = await app.listUsers();
+   res.send(usersList);
     
 });
 
 server.get('/api/getPosts', async (req:Request,res:Response) => {
-    
-    let postList = await app.listPosts();
-    await res.send(postList);
-    
+
+    let postsList = await app.listPosts();
+    res.send(postsList);
+
 });
 
 //this api returns the 
@@ -88,8 +86,7 @@ server.get('/api/getPosts', async (req:Request,res:Response) => {
 
 server.get('/api/getComments', async (req:Request,res:Response) => {
     
-    let postList = await app.listComments();
-    await res.send(postList);
+    
     
 });
 
@@ -112,4 +109,5 @@ server.get('/policy', (req:Request,res:Response) => {
     })
 })
 
-server.listen(PORT,console.log('Server is up and listening on port '+PORT.toString()+', you can check it up on '+ baseUrl ));
+
+server.listen(PORT, console.log('Server is up and listening on PORT '+PORT.toString()+'. You can check it up on '+baseUrl))

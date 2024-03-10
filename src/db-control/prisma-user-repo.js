@@ -36,51 +36,112 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserRepo = void 0;
-var UserRepo = /** @class */ (function () {
-    function UserRepo() {
-        this.users = [];
+exports.PrismaUserRepo = void 0;
+var db_1 = require("./db");
+var PrismaUserRepo = /** @class */ (function () {
+    function PrismaUserRepo() {
     }
-    UserRepo.prototype.find = function (email) {
+    PrismaUserRepo.prototype.find = function (email) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.users.find(function (user) { return user.email === email; })];
+                    case 0: return [4 /*yield*/, db_1.default.user.findUnique({
+                            where: {
+                                email: email
+                            }
+                        })];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    UserRepo.prototype.add = function (user) {
+    PrismaUserRepo.prototype.add = function (user) {
         return __awaiter(this, void 0, void 0, function () {
-            var newId;
+            var foundUser, addedUser;
             return __generator(this, function (_a) {
-                newId = crypto.randomUUID();
-                user.id = newId;
-                this.users.push(user);
-                return [2 /*return*/, user.id];
-            });
-        });
-    };
-    UserRepo.prototype.remove = function (email) {
-        return __awaiter(this, void 0, void 0, function () {
-            var index;
-            return __generator(this, function (_a) {
-                index = this.users.findIndex(function (user) { return user.email == email; });
-                if (index != -1) {
-                    this.users.splice(index, 1);
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.user.findUnique({
+                            where: { email: user.email }
+                        })];
+                    case 1:
+                        foundUser = _a.sent();
+                        if (!(foundUser == null)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, db_1.default.user.create({
+                                data: {
+                                    nickname: user.nickname,
+                                    email: user.email,
+                                    password: user.password,
+                                    posts: {}, //no posts are created at the time of creation of a user
+                                    comments: {}
+                                }
+                            })];
+                    case 2:
+                        addedUser = _a.sent();
+                        return [2 /*return*/, addedUser.id];
+                    case 3: return [2 /*return*/, null];
                 }
-                return [2 /*return*/];
             });
         });
     };
-    UserRepo.prototype.list = function () {
+    PrismaUserRepo.prototype.remove = function (email) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.users];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.user.delete({
+                            where: {
+                                email: email
+                            }
+                        })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };
-    return UserRepo;
+    PrismaUserRepo.prototype.list = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.user.findMany({})];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    return PrismaUserRepo;
 }());
-exports.UserRepo = UserRepo;
+exports.PrismaUserRepo = PrismaUserRepo;
+/*import { PrismaClient } from "@prisma/client"
+
+const prisma = new PrismaClient()
+
+async function main() {
+  // ... you will write your Prisma Client queries here
+  await prisma.user.create({
+    data: {
+      nickname: 'Rich',
+      email: 'hello@prisma.com',
+      password:'123',
+      posts: {
+        },
+    },
+  })
+
+  const allUsers = await prisma.user.findMany({
+    include: {
+      posts: true,
+    },
+  })
+  console.dir(allUsers, { depth: null })
+}
+
+main()
+  .catch(async (e) => {
+    console.error(e)
+    process.exit(1)
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
+  })
+*/ 

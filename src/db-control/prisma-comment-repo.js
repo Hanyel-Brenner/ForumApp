@@ -36,51 +36,76 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserRepo = void 0;
-var UserRepo = /** @class */ (function () {
-    function UserRepo() {
-        this.users = [];
+exports.PrismaCommentRepo = void 0;
+var db_1 = require("./db");
+var PrismaCommentRepo = /** @class */ (function () {
+    function PrismaCommentRepo() {
     }
-    UserRepo.prototype.find = function (email) {
+    PrismaCommentRepo.prototype.find = function (commentId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.users.find(function (user) { return user.email === email; })];
+                    case 0: return [4 /*yield*/, db_1.default.comment.findUnique({
+                            where: {
+                                id: commentId
+                            }
+                        })];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    UserRepo.prototype.add = function (user) {
+    PrismaCommentRepo.prototype.add = function (comment) {
         return __awaiter(this, void 0, void 0, function () {
-            var newId;
+            var addedComment;
             return __generator(this, function (_a) {
-                newId = crypto.randomUUID();
-                user.id = newId;
-                this.users.push(user);
-                return [2 /*return*/, user.id];
-            });
-        });
-    };
-    UserRepo.prototype.remove = function (email) {
-        return __awaiter(this, void 0, void 0, function () {
-            var index;
-            return __generator(this, function (_a) {
-                index = this.users.findIndex(function (user) { return user.email == email; });
-                if (index != -1) {
-                    this.users.splice(index, 1);
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.comment.create({
+                            data: {
+                                content: comment.content,
+                                date: comment.date,
+                                post: {
+                                    connect: { id: comment.post.id }
+                                },
+                                author: {
+                                    connect: { id: comment.author.id }
+                                }
+                            }
+                        })];
+                    case 1:
+                        addedComment = _a.sent();
+                        return [2 /*return*/, addedComment.id];
                 }
-                return [2 /*return*/];
             });
         });
     };
-    UserRepo.prototype.list = function () {
+    PrismaCommentRepo.prototype.remove = function (commentId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.users];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.comment.delete({
+                            where: { id: commentId }
+                        })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };
-    return UserRepo;
+    //in this function you find all the comments from a single post
+    PrismaCommentRepo.prototype.list = function (postId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.comment.findMany({
+                            where: { postId: postId }
+                        })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    return PrismaCommentRepo;
 }());
-exports.UserRepo = UserRepo;
+exports.PrismaCommentRepo = PrismaCommentRepo;

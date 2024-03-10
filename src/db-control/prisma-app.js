@@ -36,51 +36,70 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserRepo = void 0;
-var UserRepo = /** @class */ (function () {
-    function UserRepo() {
-        this.users = [];
+exports.PrismaApp = void 0;
+var prisma_post_repo_1 = require("./prisma-post-repo");
+var prisma_user_repo_1 = require("./prisma-user-repo");
+var prisma_comment_repo_1 = require("./prisma-comment-repo");
+var PrismaApp = /** @class */ (function () {
+    function PrismaApp() {
+        this.users = new prisma_user_repo_1.PrismaUserRepo();
+        this.posts = new prisma_post_repo_1.PrismaPostRepo();
+        this.comments = new prisma_comment_repo_1.PrismaCommentRepo();
     }
-    UserRepo.prototype.find = function (email) {
+    PrismaApp.prototype.registerUser = function (user) {
         return __awaiter(this, void 0, void 0, function () {
+            var addedUser;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.users.find(function (user) { return user.email === email; })];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 0: return [4 /*yield*/, this.users.add(user)];
+                    case 1:
+                        addedUser = _a.sent();
+                        return [2 /*return*/, addedUser];
                 }
             });
         });
     };
-    UserRepo.prototype.add = function (user) {
+    PrismaApp.prototype.registerPost = function (post) {
         return __awaiter(this, void 0, void 0, function () {
-            var newId;
+            var addedPost;
             return __generator(this, function (_a) {
-                newId = crypto.randomUUID();
-                user.id = newId;
-                this.users.push(user);
-                return [2 /*return*/, user.id];
-            });
-        });
-    };
-    UserRepo.prototype.remove = function (email) {
-        return __awaiter(this, void 0, void 0, function () {
-            var index;
-            return __generator(this, function (_a) {
-                index = this.users.findIndex(function (user) { return user.email == email; });
-                if (index != -1) {
-                    this.users.splice(index, 1);
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.posts.add(post)];
+                    case 1:
+                        addedPost = _a.sent();
+                        return [2 /*return*/, addedPost];
                 }
-                return [2 /*return*/];
             });
         });
     };
-    UserRepo.prototype.list = function () {
+    PrismaApp.prototype.registerComment = function (comment) {
+        return __awaiter(this, void 0, void 0, function () {
+            var addedComment;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.comments.add(comment)];
+                    case 1:
+                        addedComment = _a.sent();
+                        return [2 /*return*/, addedComment];
+                }
+            });
+        });
+    };
+    PrismaApp.prototype.listUsers = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.users];
+                return [2 /*return*/, this.users.list()];
             });
         });
     };
-    return UserRepo;
+    PrismaApp.prototype.listPosts = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.posts.list()];
+            });
+        });
+    };
+    return PrismaApp;
 }());
-exports.UserRepo = UserRepo;
+exports.PrismaApp = PrismaApp;
+exports.default = new PrismaApp();

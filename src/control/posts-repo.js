@@ -41,10 +41,10 @@ var PostRepo = /** @class */ (function () {
     function PostRepo() {
         this.posts = [];
     }
-    PostRepo.prototype.find = function (title) {
+    PostRepo.prototype.find = function (postId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, (this.posts || []).find(function (user) { return user.title === title; })];
+                return [2 /*return*/, (this.posts || []).find(function (post) { return post.id == postId; })];
             });
         });
     };
@@ -66,10 +66,7 @@ var PostRepo = /** @class */ (function () {
                 index = this.posts.findIndex(function (post) { return post.id == postId; });
                 if (index != -1) {
                     this.posts.splice(index, 1);
-                    return [2 /*return*/, true];
                 }
-                else
-                    return [2 /*return*/, false];
                 return [2 /*return*/];
             });
         });

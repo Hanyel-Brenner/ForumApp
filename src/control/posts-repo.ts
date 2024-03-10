@@ -4,9 +4,9 @@ export class PostRepo{
 
     public posts:Post[] = [];
 
-    async find(title:string):Promise<Post>
+    async find(postId:string):Promise<Post>
     {
-        return (this.posts || []).find(user => user.title === title);
+        return (this.posts || []).find(post => post.id == postId);
     }
     async add(post:Post):Promise<string>
     {
@@ -15,14 +15,12 @@ export class PostRepo{
         this.posts.push(post);
         return post.id;
     }
-    async remove(postId:string):Promise<boolean>
+    async remove(postId:string):Promise<void>
     {
         let index = this.posts.findIndex(post => post.id == postId);
         if(index != -1){
             this.posts.splice(index,1);
-            return true;
         }
-        else return false;
     }
     async list():Promise<Post[]>{
         return await this.posts;

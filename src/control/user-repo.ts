@@ -7,7 +7,7 @@ export class UserRepo implements IUserRepo{   //UserRepo is basically an array o
 
     async find(email:string):Promise<User>
     {
-        return this.users.find(user => user.email === email);
+        return await this.users.find(user => user.email === email);
     }
     async add(user:User):Promise<string>
     {
@@ -17,14 +17,12 @@ export class UserRepo implements IUserRepo{   //UserRepo is basically an array o
         return user.id;
         
     }
-    async remove(email:string):Promise<boolean>
+    async remove(email:string):Promise<void>
     {
         let index = this.users.findIndex(user => user.email == email);
         if( index != -1) {
             this.users.splice(index,1);
-            return true;
         }
-        else return false
     }
     async list():Promise<User[]>
     {

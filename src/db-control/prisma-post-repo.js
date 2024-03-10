@@ -36,51 +36,73 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserRepo = void 0;
-var UserRepo = /** @class */ (function () {
-    function UserRepo() {
-        this.users = [];
+exports.PrismaPostRepo = void 0;
+var db_1 = require("./db");
+var PrismaPostRepo = /** @class */ (function () {
+    function PrismaPostRepo() {
     }
-    UserRepo.prototype.find = function (email) {
+    PrismaPostRepo.prototype.find = function (postId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.users.find(function (user) { return user.email === email; })];
+                    case 0: return [4 /*yield*/, db_1.default.post.findUnique({
+                            where: { id: postId }
+                        })];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    UserRepo.prototype.add = function (user) {
+    //add Post to the database, an post obviously always has to be linked to an existing user
+    PrismaPostRepo.prototype.add = function (post) {
         return __awaiter(this, void 0, void 0, function () {
-            var newId;
+            var addedPost;
             return __generator(this, function (_a) {
-                newId = crypto.randomUUID();
-                user.id = newId;
-                this.users.push(user);
-                return [2 /*return*/, user.id];
-            });
-        });
-    };
-    UserRepo.prototype.remove = function (email) {
-        return __awaiter(this, void 0, void 0, function () {
-            var index;
-            return __generator(this, function (_a) {
-                index = this.users.findIndex(function (user) { return user.email == email; });
-                if (index != -1) {
-                    this.users.splice(index, 1);
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.post.create({
+                            data: {
+                                title: post.title,
+                                content: post.content,
+                                date: post.date,
+                                author: {
+                                    connect: { id: post.author.id }
+                                },
+                                comments: {}
+                            }
+                        })];
+                    case 1:
+                        addedPost = _a.sent();
+                        return [2 /*return*/, addedPost.id];
                 }
-                return [2 /*return*/];
             });
         });
     };
-    UserRepo.prototype.list = function () {
+    PrismaPostRepo.prototype.remove = function (postId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.users];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.post.delete({
+                            where: {
+                                id: postId
+                            }
+                        })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };
-    return UserRepo;
+    PrismaPostRepo.prototype.list = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.default.post.findMany({})];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    return PrismaPostRepo;
 }());
-exports.UserRepo = UserRepo;
+exports.PrismaPostRepo = PrismaPostRepo;
