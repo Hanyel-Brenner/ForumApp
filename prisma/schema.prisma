@@ -42,3 +42,10 @@ model Comment{
   date DateTime
 
 }
+
+model Cookie{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  sessionId String @unique
+  email String
+  date DateTime
+}

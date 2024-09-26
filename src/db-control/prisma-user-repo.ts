@@ -7,12 +7,12 @@ export class PrismaUserRepo implements IUserRepo{
     
     async find(email:string):Promise<User>
     {
-        return await prisma.user.findUnique({
+        let user = await prisma.user.findUnique({
           where : {
             email : email
           }
         })
-        
+          return user;
     }
 
     async add(user:User):Promise<string>

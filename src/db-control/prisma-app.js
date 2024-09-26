@@ -40,12 +40,34 @@ exports.PrismaApp = void 0;
 var prisma_post_repo_1 = require("./prisma-post-repo");
 var prisma_user_repo_1 = require("./prisma-user-repo");
 var prisma_comment_repo_1 = require("./prisma-comment-repo");
+var prisma_cookie_repo_1 = require("./prisma-cookie-repo");
+var cookie_1 = require("../models/cookie");
 var PrismaApp = /** @class */ (function () {
     function PrismaApp() {
         this.users = new prisma_user_repo_1.PrismaUserRepo();
         this.posts = new prisma_post_repo_1.PrismaPostRepo();
         this.comments = new prisma_comment_repo_1.PrismaCommentRepo();
+        this.cookies = new prisma_cookie_repo_1.PrismaCookieRepo();
     }
+    PrismaApp.prototype.authenticateUser = function (email, password) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.users.find(email)];
+                    case 1:
+                        user = _a.sent();
+                        if (!user)
+                            return [2 /*return*/, false];
+                        if (user.password != password)
+                            return [2 /*return*/, false];
+                        if (user.password == password)
+                            return [2 /*return*/, true];
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     PrismaApp.prototype.registerUser = function (user) {
         return __awaiter(this, void 0, void 0, function () {
             var addedUser;
@@ -96,6 +118,41 @@ var PrismaApp = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, this.posts.list()];
+            });
+        });
+    };
+    PrismaApp.prototype.createCookie = function (email, sessionId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var cookie;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        cookie = new cookie_1.Cookie(email, sessionId);
+                        return [4 /*yield*/, this.cookies.add(cookie)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, cookie.sessionId];
+                }
+            });
+        });
+    };
+    PrismaApp.prototype.verifyCookie = function (cookieId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.cookies.verify(cookieId)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    PrismaApp.prototype.getCookie = function (cookieId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.cookies.find(cookieId)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
             });
         });
     };

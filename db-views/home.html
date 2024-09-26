@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" >
     <link rel = 'stylesheet' href = 'home.css' type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Libre Franklin' rel='stylesheet'>
     <meta content='width = device-width, initial-scale = 1.0' >
 </head>
 <body>
@@ -22,26 +23,33 @@
         {
             //create elements for each of the parts of the post 
             let postContainer = document.createElement('div'); //contais a singular post container
-            let title = document.createElement('p');
-            let author = document.createElement('p');
-            let date = document.createElement('p');
-            let content = document.createElement('p');
+            let title = document.createElement('div');
+            let author = document.createElement('div');
+            let date = document.createElement('div');
+            let content = document.createElement('div');
+            let optionsField = document.createElement('div');
+            let commentLink = document.createElement('a');
             //set classes respective to each so we can reference them all at once in the .css file
             postContainer.classList.add('post-container')
             title.classList.add('title');
             author.classList.add('author');
             date.classList.add('date');
             content.classList.add('content');
+            optionsField.classList.add('options-field');
+            commentLink.classList.add('comment-link');
 
             title.textContent = resp[i].title;
-            author.textContent = resp[i].authorId;
-            date.textContent = resp[i].date;
+            author.textContent = "Author : " + resp[i].authorId;
+            date.textContent = "Date : " + resp[i].date;
             content.textContent = resp[i].content;
 
             postContainer.appendChild(title);
             postContainer.appendChild(author);
             postContainer.appendChild(content);
             postContainer.appendChild(date);
+            commentLink.innerHTML = "<a href = ./comments?postId="+resp[i].id +">Comments</>";
+            optionsField.appendChild(commentLink);
+            postContainer.appendChild(optionsField);  
 
             element.appendChild(postContainer); //finally append all post elements into the post list in home page.
         }

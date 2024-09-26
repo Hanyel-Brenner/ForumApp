@@ -36,115 +36,88 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PrismaUserRepo = void 0;
+exports.PrismaCookieRepo = void 0;
 var db_1 = require("./db");
-var PrismaUserRepo = /** @class */ (function () {
-    function PrismaUserRepo() {
+var PrismaCookieRepo = /** @class */ (function () {
+    function PrismaCookieRepo() {
     }
-    PrismaUserRepo.prototype.find = function (email) {
+    PrismaCookieRepo.prototype.find = function (cookieId) {
         return __awaiter(this, void 0, void 0, function () {
-            var user;
+            var foundCookie;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.user.findUnique({
+                    case 0: return [4 /*yield*/, db_1.default.cookie.findUnique({
                             where: {
-                                email: email
+                                sessionId: cookieId
                             }
                         })];
                     case 1:
-                        user = _a.sent();
-                        return [2 /*return*/, user];
+                        foundCookie = _a.sent();
+                        return [2 /*return*/, foundCookie];
                 }
             });
         });
     };
-    PrismaUserRepo.prototype.add = function (user) {
+    PrismaCookieRepo.prototype.add = function (cookie) {
         return __awaiter(this, void 0, void 0, function () {
-            var foundUser, addedUser;
+            var foundCookie, addedCookie;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.user.findUnique({
-                            where: { email: user.email }
-                        })];
+                    case 0: return [4 /*yield*/, this.find(cookie.sessionId)];
                     case 1:
-                        foundUser = _a.sent();
-                        if (!(foundUser == null)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, db_1.default.user.create({
+                        foundCookie = _a.sent();
+                        if (!!foundCookie) return [3 /*break*/, 3];
+                        return [4 /*yield*/, db_1.default.cookie.create({
                                 data: {
-                                    nickname: user.nickname,
-                                    email: user.email,
-                                    password: user.password,
-                                    posts: {}, //no posts are created at the time of creation of a user
-                                    comments: {}
+                                    sessionId: cookie.sessionId,
+                                    email: cookie.email,
+                                    date: cookie.date
                                 }
                             })];
                     case 2:
-                        addedUser = _a.sent();
-                        return [2 /*return*/, addedUser.id];
+                        addedCookie = _a.sent();
+                        return [2 /*return*/, addedCookie.sessionId];
                     case 3: return [2 /*return*/, null];
                 }
             });
         });
     };
-    PrismaUserRepo.prototype.remove = function (email) {
+    PrismaCookieRepo.prototype.remove = function (email) {
         return __awaiter(this, void 0, void 0, function () {
+            var foundCookie;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.user.delete({
+                    case 0: return [4 /*yield*/, db_1.default.cookie.delete({
                             where: {
                                 email: email
                             }
                         })];
                     case 1:
-                        _a.sent();
+                        foundCookie = _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    PrismaUserRepo.prototype.list = function () {
+    PrismaCookieRepo.prototype.verify = function (cookieId) {
         return __awaiter(this, void 0, void 0, function () {
+            var foundCookie;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.user.findMany({})];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 0: return [4 /*yield*/, db_1.default.cookie.findUnique({
+                            where: {
+                                sessionId: cookieId
+                            }
+                        })];
+                    case 1:
+                        foundCookie = _a.sent();
+                        if (foundCookie)
+                            return [2 /*return*/, true];
+                        return [2 /*return*/, false];
                 }
             });
         });
     };
-    return PrismaUserRepo;
+    return PrismaCookieRepo;
 }());
-exports.PrismaUserRepo = PrismaUserRepo;
-/*import { PrismaClient } from "@prisma/client"
-
-const prisma = new PrismaClient()
-
-async function main() {
-  // ... you will write your Prisma Client queries here
-  await prisma.user.create({
-    data: {
-      nickname: 'Rich',
-      email: 'hello@prisma.com',
-      password:'123',
-      posts: {
-        },
-    },
-  })
-
-  const allUsers = await prisma.user.findMany({
-    include: {
-      posts: true,
-    },
-  })
-  console.dir(allUsers, { depth: null })
-}
-
-main()
-  .catch(async (e) => {
-    console.error(e)
-    process.exit(1)
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
-*/ 
+exports.PrismaCookieRepo = PrismaCookieRepo;

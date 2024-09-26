@@ -23,7 +23,12 @@ nav{
     width:100%;
 }
 
-.post-container{
+#comments-list
+{
+    margin:45px;
+}
+
+.comment-container{
     margin  : 10px;
     border: 1px solid #020849;
     color: black;
